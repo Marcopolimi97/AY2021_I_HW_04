@@ -39,7 +39,7 @@ CY_ISR(Custom_ISR_ADC)
     Timer_ReadStatusRegister();
     
     //leggo il valore del photoresistor
-    AMux_Select(PHOTORESISTOR_MUX);
+    AMux_FastSelect(PHOTORESISTOR_MUX);
     
     value_digit_Photo= ADC_DelSig_Read32();
     
@@ -54,12 +54,17 @@ CY_ISR(Custom_ISR_ADC)
         value_digit_Photo=65535;
     }
     
+    //byte0 header, byte 5 tail
+    DataBuffer[1]=value_digit_Photo>>8;
+    DataBuffer[2]=value_digit_Photo & 0xFF;
+    
     //se il photoresistor legge una bassa luminosità,
     //allora nel main attivo il led 
     if(value_digit_Photo < PHOTORESISTORTHRESHOLD)
     {
         PhotoresistorThresholdFlag=1;
     }   
+    
     
 //----------------------------------------    
     PhotoresistorThresholdFlag=1;
@@ -69,7 +74,7 @@ CY_ISR(Custom_ISR_ADC)
     //allora procedo a leggere il valore del potenziometro
     if(PhotoresistorThresholdFlag)
     {
-        AMux_Select(POTENTIOMETER_MUX);
+        AMux_FastSelect(POTENTIOMETER_MUX);
         
         //leggo il valore
         value_digit_PWM= ADC_DelSig_Read32();
@@ -85,9 +90,11 @@ CY_ISR(Custom_ISR_ADC)
             value_digit_PWM=65535;
         }
     
-        //byte0 header, byte 3 tail
-        DataBuffer[1]=value_digit_PWM>>8;
-        DataBuffer[2]=value_digit_PWM & 0xFF;
+        //value_mv_PWM= ADC_DelSig_CountsTo_mVolts(value_digit_PWM);
+        
+        //byte0 header, byte 5 tail
+        DataBuffer[3]=value_digit_PWM>>8;
+        DataBuffer[4]=value_digit_PWM & 0xFF;
         
         PacketReadyFlag=1;
     }  

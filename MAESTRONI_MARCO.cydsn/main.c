@@ -31,7 +31,7 @@ int main(void)
     AMux_Start();
     
     //attivo le varie interrupts
-    isr_ADC_StartEx(Custom_ISR_ADC);
+    //isr_ADC_StartEx(Custom_ISR_ADC);
     isr_RX_StartEx(Custom_ISR_RX);   
  
     //inizializzo le flags
@@ -46,8 +46,9 @@ int main(void)
     DataBuffer[0]=0xA0;
     DataBuffer[TRANSMIT_BUFFER_SIZE-1]=0xC0;
     
-    // Start the ADC conversion
-    ADC_DelSig_StartConvert();
+// Start the ADC conversion----------
+    //ADC_DelSig_StartConvert();
+//-------------- forse non necessario
     
     //inializzo il LED_PWM e il LED_UART spenti
     PWM_LED_Start();
@@ -56,8 +57,10 @@ int main(void)
     LED_UART_Write(LED_OFF);
     
     //-------------
-    Timer_Start();
+    //Timer_Start();
     //-----------
+    
+    isr_ADC_StartEx(Custom_ISR_ADC);
     
     for(;;)
     {   

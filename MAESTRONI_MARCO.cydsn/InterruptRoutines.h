@@ -16,7 +16,9 @@
     #include "cytypes.h"
     #include "stdio.h"
     
-    #define BYTE_TO_SEND 2
+    //4 byte per inviare: header, valore photoresistor, valore potenziometro, tail
+    #define BYTE_TO_SEND 4
+    
     #define TRANSMIT_BUFFER_SIZE 1+BYTE_TO_SEND+1
     
     CY_ISR_PROTO(Custom_ISR_ADC);
