@@ -1,0 +1,7 @@
+;-------RX8 packet structure---
+;Header = {0xA0}
+;Data = {2 bytes pot uint16}
+;Tail = {0xC0};
+;------------------------------
+rx8 [h=A0] @1photo @0photo @1pot @0pot [t=C0] 
+
